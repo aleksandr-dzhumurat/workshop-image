@@ -1,5 +1,6 @@
 FROM ubuntu:18.04
 
+ARG WORK_DIR=/srv/data_client
 
 RUN apt-get update && \
     apt-get install -y curl nano python3-pip python3.6 python3.6-dev wget && \
@@ -10,25 +11,24 @@ RUN apt-get update && \
     apt-get install -y postgresql-client-10 mongodb mongo-tools && \
     apt-get autoremove
 
-
 ENV \
     # Настройка pipenv
     PIPENV_VENV_IN_PROJECT=1 \
-    PIPENV_CACHE_DIR=/srv/app/.cache/pipenv \
-    PIP_CACHE_DIR=/srv/app/.cache/pip \
+    PIPENV_CACHE_DIR=${WORK_DIR}/.cache/pipenv \
+    PIP_CACHE_DIR=${WORK_DIR}/.cache/pip \
     LC_ALL=C.UTF-8 \
     LANG=C.UTF-8
 
-WORKDIR "/srv/app"
+WORKDIR "${WORK_DIR}"
 
-COPY Pipfile /srv/app/Pipfile
-COPY Pipfile.lock /srv/app/Pipfile.lock
+COPY assets/Pipfile ${WORK_DIR}/Pipfile
+COPY assets/Pipfile.lock ${WORK_DIR}/Pipfile.lock
 
 RUN \
     pipenv install --deploy && \
     rm -rf ./.cache
 
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY assets/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 ENTRYPOINT ["docker-entrypoint.sh"]
