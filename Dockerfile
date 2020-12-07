@@ -2,6 +2,10 @@ FROM ubuntu:18.04
 
 ARG WORK_DIR=/srv/data_client
 
+ARG DOCKER_USER="data_client"
+ARG DOCKER_UID="1000"
+ARG DOCKER_GID="100"
+
 RUN apt-get update && \
     apt-get install -y curl nano python3-pip python3.6 python3.6-dev wget && \
     update-alternatives --install /usr/bin/python3 python3.6 /usr/bin/python3.6 0 && \
