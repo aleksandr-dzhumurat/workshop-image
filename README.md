@@ -28,14 +28,18 @@ pipenv install requests==2.20.0
 
 Копируем обновлённые файлы с зависимостями
 ```shell
-docker cp 2910789961bc:/srv/data_client/Pipfile.lock . \
-docker cp 2910789961bc:/srv/data_client/Pipfile .
+DOCKER_CONTAINER=$(docker ps -q --filter "ancestor=workshop_image:dev") && docker cp "$DOCKER_CONTAINER:/srv/data_client/Pipfile.lock" ./assets && docker cp "$DOCKER_CONTAINER:/srv/data_client/Pipfile" ./assets
 ```
 
 # CI/CD
 
 Настроена сборка в [Docker Hub](https://hub.docker.com/repository/docker/adzhumurat/workshop-image/builds).
 
-Чтобы запустить сборку в `hub.docker.com`, на локальной машинe нужно выполнить `bash assets/create_tag.sh`.
+Чтобы запустить сборку в `hub.docker.com`, на локальной машинe нужно
+
+* закоммитить изменения в своей ветке
+* переключиться в мастер-ветку `git checkout main`
+* замержить ветку `git merge --no-ff ВЕТКА_С_ИЗМЕНЕНИЯМИ` 
+* выполнить `bash assets/create_tag.sh`.
 
 В github будет запушен тэг, который инициирует сборку образа в Docker Hub.
