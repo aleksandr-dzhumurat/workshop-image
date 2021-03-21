@@ -24,7 +24,7 @@ pillow = "==7.0.0"
 nltk = "==3.4.4"
 implicit = "==0.4.2"
 requests = "==2.20.0"
-statsmodels = "==0.9.0"
+statsmodels = "==0.11.0"
 
 [requires]
 python_version = "3.6"
